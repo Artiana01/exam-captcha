@@ -1,81 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WhoAmI Sequence with reCAPTCHA</title>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    #output {
-      margin-top: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Requête avec CAPTCHA</title>
+    <script type="text/javascript" src="./config.js.js" defer></script>
+    
+    <script type="text/javascript" src="https://b82b1763d1c3.eu-west-3.captcha-sdk.awswaf.com/b82b1763d1c3/jsapi.js" defer></script>
 </head>
 <body>
-  <h1>WhoAmI Sequence Generator</h1>
-  <form id="numberForm">
-    <label for="number">Enter a number (1-1000):</label>
-    <input type="number" id="number" min="1" max="1000" required />
-    <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
-    <button type="submit">Submit</button>
-  </form>
-
-  <div id="output"></div>
-
-  <script>
-    const apiUrl = "https://api.prod.jcloudify.com/whoami";
-    const form = document.getElementById("numberForm");
-    const output = document.getElementById("output");
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const number = parseInt(document.getElementById("number").value, 10);
-
-      if (number < 1 || number > 1000) {
-        alert("Please enter a valid number between 1 and 1000.");
-        return;
-      }
-
-      // Get reCAPTCHA token
-      const recaptchaToken = grecaptcha.getResponse();
-      if (!recaptchaToken) {
-        alert("Please complete the reCAPTCHA.");
-        return;
-      }
-
-      output.innerHTML = ""; // Clear previous output
-      form.classList.add("hidden"); // Hide the form
-
-      for (let i = 1; i <= number; i++) {
-        try {
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              "X-Recaptcha-Token": recaptchaToken, // Pass the reCAPTCHA token
-            },
-          });
-
-          if (response.ok) {
-            output.innerHTML += `<p>${i}. Forbidden</p>`;
-          } else {
-            output.innerHTML += `<p>${i}. Error: ${response.status}</p>`;
-          }
-        } catch (error) {
-          output.innerHTML += `<p>${i}. Error: ${error.message}</p>`;
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
-      }
-
-      form.classList.remove("hidden"); // Show the form again
-    });
-  </script>
+    <h1>captcha</h1>
+    
+    <form id="form">
+        <label for="numberInput">Entrez un nombre entre 1 et 1000:</label>
+        <input type="number" id="numberInput" min="1" max="1000" required />
+        <button type="submit">Envoyer</button>
+    </form>
+    <div id="output"></div>
+    <div id="captchaContainer"></div>
 </body>
 </html>

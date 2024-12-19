@@ -1,0 +1,35 @@
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="./config.js" defer></script>
+    <script type="text/javascript" src="https://2b17d9cec338.eu-west-3.captcha-sdk.awswaf.com/2b17d9cec338/jsapi.js" defer></script>
+   
+</head>
+<script type="text/javascript">
+    function showMyCaptcha() {
+        var container = document.querySelector("#my-captcha-container");
+        
+        AwsWafCaptcha.renderCaptcha(container, {
+            apiKey: window.WAF_API_KEY,
+            onSuccess: captchaExampleSuccessFunction,
+            onError: captchaExampleErrorFunction,
+        });
+    }
+    
+    function captchaExampleSuccessFunction(wafToken) {
+        // Use WAF token to access protected resources
+        console.log("Captcha success! Token:", wafToken);
+    }
+    
+    function captchaExampleErrorFunction(error) {
+        console.error("Captcha error:", error);
+    }
+</script>
+
+<body>
+    <div id="my-captcha-container">
+        <!-- CAPTCHA will be rendered here -->
+    </div>
+    <button onclick="showMyCaptcha()">
+        View Captcha
+    </button>
+</body>
